@@ -1,8 +1,9 @@
-// TODO: Include packages needed for this application
+// packages needed for this application
 const inquirer = require("inquirer");
 const fs = require('fs');
-// TODO: Create an array of questions for user input
-const questions = readmeData => {
+const generateMarkdown = require("./utils/generateMarkdown");
+// Create an array of questions for user input
+const questions = () => {
 
     return inquirer.prompt([
         {
@@ -28,7 +29,7 @@ const questions = readmeData => {
         {
             type: "input",
             name: "contribution",
-            message: "Provide contribution guidlines for your project:"
+            message: "Provide contribution guidelines for your project:"
         },
         {
             type: "input",
@@ -39,7 +40,7 @@ const questions = readmeData => {
             type: "list",
             name: "license",
             message: "Please select your license:",
-            choices: ["GNU AGP Lv3", "GNU GPLv3", "GNU LGPv3", "Mozilla Public Liscense 2.0", "Apache License 2.0", "MIT License 2.0", "Boost Software License 1.0", "The Unlicense"]
+            choices: ["GNU AGP Lv3", "GNU GPLv3", "GNU LGPLv3", "Mozilla Public Liscense 2.0", "Apache License 2.0", "MIT License 2.0", "Boost Software License 1.0", "The Unlicense"]
         },
         {
             type: "input",
@@ -52,33 +53,32 @@ const questions = readmeData => {
             message: "What is your email?"
         }
     ])
+
 };
 
-// TODO: Create a function to write README file
-function writeToFile(fileName, data) {
-    return new Promise((resolve, reject) => {
-        fs.writeFile("README.md", data, err => {
+// function to write README file
+function writeToFile(data) {
+    fs.writeFile("README.md", data, err => {
 
+        if (err) {
+            reject(err);
+            return;
+        } else {
+            console.log("ReadMe complete!");
+        }
+    })
+};
 
-            if (err) {
-                reject(err);
-                return;
-            }
-
-            resolve({
-                ok: true,
-                message: "ReadMe Created!"
-            });
+// function to initialize app
+function init() {
+    questions()
+        .then(answers => {
+            return generateMarkdown(answers);
         })
-    });
+        .then(pageMarkdown => {
+            return writeToFile(pageMarkdown);
+        })
 };
-
-// TODO: Create a function to initialize app
-function init() { }
 
 // Function call to initialize app
 init();
-
-questions().then(readmeData => {
-    console.log(readmeData);
-});
