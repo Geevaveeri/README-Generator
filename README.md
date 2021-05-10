@@ -18,7 +18,7 @@ To install this application, clone the repository. Then open your console in the
 
 ## Usage
 https://youtu.be/-l-8x56nJt4
-The above youtube video show how the application functions.
+ This youtube video show how the application functions.
 
 ## Contributing
 
